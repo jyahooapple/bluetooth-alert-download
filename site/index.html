@@ -63,7 +63,7 @@
 <li><strong>App force-stopped.</strong> During an alert, open Android <strong>Settings → Apps → Bluetooth Alert → Force stop</strong>, then reopen the app with the receiver still connected. The alert should resume.</li>
 <li><strong>Long gap, ideally overnight.</strong> Interrupt an alert by switching the receiver off or leaving range for more than 30 minutes. In a car, the simplest way is to park for the night with an alert playing, take the phone inside, and start the car again in the morning. When you return, the old alert must not replay. The receiver should show only <strong>Welcome back</strong> with a count, and no notification text. If you can, repeat this once with the app force-stopped while away, and once with the phone restarted.</li>
 <li><strong>Alert-delivery notification.</strong> On Android 8 or later, check that a <strong>Bluetooth Alert · Delivering an alert</strong> notification appears while an alert plays and disappears when it ends. This matters most on Android 15.</li>
-<li><strong>Save the app's field-test package (optional).</strong> Before step 3, you can tap <strong>Start Field Test</strong> on the main screen, leaving the vehicle text boxes empty. When you finish, tap <strong>Finish, Save &amp; Share ZIP</strong> and choose your email app. The package contains only structured checks; photos, notification text, Bluetooth names, typed vehicle details and raw logs are excluded by the app.</li>
+<li><strong>Save the app's field-test package (optional).</strong> Before step 3, you can tap <strong>Start Field Test</strong> on the main screen, leaving the vehicle text boxes empty. When you finish, tap <strong>Finish, Save &amp; Share ZIP</strong> and choose your email app. The app builds the package from structured checks only; photos, notification text, Bluetooth names, typed vehicle details and raw logs are left out automatically.</li>
 </ol>
 
 <h2 id="help">If something does not work</h2>
@@ -74,10 +74,10 @@
 <details><summary>I do not know the model or Bluetooth version</summary><p>Use “Unknown.” A generic product model, such as “Toyota factory stereo” or “Sony speaker,” is enough to start. You do not need to look up technical profiles or Bluetooth versions. Do not use a personalized Bluetooth name such as a person's phone or car name.</p></details>
 
 <h2 id="report">4. Report your results by email</h2>
-<p>Fill in what you know below, then tap <strong>Email report</strong>. It opens your email app with the report filled in. Add the address from your invitation email, attach the app files listed below, check everything, and send. <strong>Nothing is sent automatically.</strong></p>
-<div class="notice"><strong>Remove all personal information before you send anything.</strong>
-<p>We only want test results. Before sending, read the report, every attachment and your email itself, and delete anything personal: names, contacts, phone numbers, email addresses other than your own sender address, notification or message text, locations, license plates, VINs, serial numbers, IMEI, MAC/Bluetooth addresses, and personalized device names such as “Sam's car”. Remove your email signature too. If you are unsure whether something is personal, delete it or leave that file out.</p>
-<p>Attach only these files from beta.6: the <strong>privacy-safe capability report</strong> (text), the <strong>field-test package</strong> whose name starts with <strong>safe-v2_</strong>, and, if asked, the text from <strong>▶ Debug logs → Copy logs</strong> pasted into the email. These are designed not to contain message content, but please still check them. Do not send screenshots, photos, screen recordings, or ZIP files from older app versions.</p></div>
+<p>Fill in what you know below, then tap <strong>Email report</strong>. It opens your email app with the report filled in. Add the address from your invitation email, attach the app files listed below, and send. <strong>Nothing is sent automatically.</strong></p>
+<div class="notice"><strong>Your privacy: the app's files are already cleaned for you.</strong>
+<p>Attach the app's own files: the <strong>privacy-safe capability report</strong>, the <strong>field-test package</strong> whose name starts with <strong>safe-v2_</strong>, and, if asked, the text from <strong>▶ Debug logs → Copy logs</strong>. The app builds these from a fixed list of technical facts, such as Android version, which Bluetooth functions worked, and counts. It leaves out message and notification text, contact names and numbers, Bluetooth device names and addresses, anything you typed about your vehicle, photos and locations. You do not need to edit them.</p>
+<p><strong>Your only check is what you write yourself.</strong> Use generic device models, such as “Samsung Galaxy S22” or “Toyota factory stereo”, not a personal name like “Sam's car”. Keep personal details, and your email signature if you like, out of the email. Please don't add screenshots, photos or files from older app versions, since those are not cleaned.</p></div>
 <form id="report-form">
 <fieldset><legend>What you tested</legend><div class="grid">
 <label>App version <input name="appVersion" maxlength="70" placeholder="Shown at the top of the app; or Unknown" autocomplete="off"></label>
@@ -115,7 +115,7 @@
 </fieldset>
 <label for="report-preview">Your report — check it before sharing</label>
 <textarea id="report-preview" rows="14" readonly spellcheck="false"></textarea>
-<label class="check"><input type="checkbox" id="privacy-check" required>I checked this report, every attachment and my email, and removed all personal information. I understand nothing is sent until I press Send.</label>
+<label class="check"><input type="checkbox" id="privacy-check" required>I described my devices by generic model only and added nothing personal. I understand nothing is sent until I press Send.</label>
 <div class="actions"><button type="button" id="email-report">Email report</button><button type="button" class="secondary" id="copy-report">Copy report</button><button type="button" class="secondary" id="download-report">Download report</button></div>
 <p id="report-status" role="status" aria-live="polite"></p>
 <p class="small"><strong>Email app did not open?</strong> Copy or download the report and paste or attach it to an email to the address in your invitation.</p>
@@ -139,7 +139,7 @@
   const value = name => form.elements.namedItem(name).value.replace(/[\r\n\x00-\x1f]/g, ' ').trim() || 'Unknown';
   const attachments = () => [...form.querySelectorAll('[data-label]')].filter(box => box.checked).map(box => box.dataset.label).join(', ') || 'None';
   function update() {
-    preview.value = ['Bluetooth Alert — physical beta test', 'Test source: generated app alerts and self-made dummy notifications; results are tester observations.', ...fields.map(([name,label]) => label + ': ' + value(name)), 'Attachments: ' + attachments(), '', 'Personal information, notification text, photos and screenshots removed by the tester before sending.'].join('\n');
+    preview.value = ['Bluetooth Alert — physical beta test', 'Test source: generated app alerts and self-made dummy notifications; results are tester observations.', ...fields.map(([name,label]) => label + ': ' + value(name)), 'Attachments: ' + attachments(), '', 'App files attached as exported by the app; no screenshots or photos added.'].join('\n');
   }
   function checked() {
     if (!form.reportValidity()) return false;
@@ -153,7 +153,7 @@
     const subject = encodeURIComponent('Bluetooth Alert beta report — ' + value('category') + ' — ' + value('appVersion'));
     const link = document.createElement('a'); link.href = 'mailto:?subject=' + subject + '&body=' + encodeURIComponent(preview.value);
     document.body.append(link); link.click(); link.remove();
-    status.textContent = 'Your email app should open with the report. Add the address from your invitation, attach the app files, check everything for personal information, then send. Nothing has been sent yet.';
+    status.textContent = 'Your email app should open with the report. Add the address from your invitation and attach the app files, then send. Nothing has been sent yet.';
   });
   document.getElementById('copy-report').addEventListener('click', async () => {
     if (!checked()) return;
