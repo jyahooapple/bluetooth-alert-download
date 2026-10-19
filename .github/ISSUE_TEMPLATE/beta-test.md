@@ -23,12 +23,13 @@ Email is the preferred way to report (see the tester page). If you use GitHub in
 - Disconnect/reconnect (test worked again / connected but title missing / could not reconnect / app needed reopening / not tested):
 - Music after dismissing alert (automatic resume / manual restart needed / no resume / kept switching / not tested):
 - Notification access (left off / enabled for recovery tests / blocked or unavailable / unknown):
-- Receiver off under 30 min (same alert resumed with title and audio / title only / audio only / did not resume / duplicate or stuck / not tested):
+- Receiver or car off under 30 min (same alert resumed with title and audio / title only / audio only / did not resume / duplicate or stuck / not tested):
 - Three quick power flaps (reconnected each time / missed a reconnect / duplicate or stuck / not tested):
 - Out of range and back (same options as receiver off):
 - Force-stop and reopen (same options as receiver off):
 - Away over 30 min (only Welcome back with a count / old alert replayed / nothing shown / notification text shown / not tested):
-- Away over 30 min with app killed or phone restarted (same options):
+- Away over 30 min, app force-stopped while away (same options):
+- Away over 30 min, phone restarted while away (same options):
 - "Delivering an alert" notification (appeared then went away / stayed / did not appear / Android older than 8 / not tested):
 
 - [ ] I checked that this report contains no personal information or uniquely identifying device information.

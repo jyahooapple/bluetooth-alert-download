@@ -41,6 +41,8 @@ const { chromium } = require('playwright');
     assert.ok(recoveryReport.includes('Receiver off under 30 min: Same alert resumed with title and audio'));
     assert.ok(recoveryReport.includes('Away over 30 min: Only Welcome back with a count'));
     assert.ok(recoveryReport.includes('Three quick power flaps: Not tested'));
+    assert.ok(recoveryReport.includes('Away over 30 min, app force-stopped: Not tested'));
+    assert.ok(recoveryReport.includes('Away over 30 min, phone restarted: Not tested'));
     assert.ok(recoveryReport.includes('Attachments: Capability report, Field-test package (safe-v2_)'));
     for (const text of ['What Bluetooth Alert is', 'does not store or upload the content', 'Remove all personal information before you send anything', 'Welcome back']) {
       assert.ok((await page.locator('main').innerText()).includes(text), `Page must explain: ${text}`);

@@ -19,7 +19,7 @@
 <p><strong>Privacy first.</strong> The app is a pass-through. It does not store or upload the content of your messages or alerts, and it has no account or cloud service. Anything you send us is something you choose to share by email, after checking it yourself.</p>
 <p><strong>You need an Android phone</strong> (this APK cannot be installed on an iPhone) and, for the main test, a paired receiver with a screen that shows Bluetooth music titles. Receivers without a display are still useful for testing setup and audio.</p>
 <a class="button primary" href="https://github.com/jyahooapple/bluetooth-alert-download/releases/latest/download/app-debug.apk" download>Download latest beta APK</a>
-<p class="small"><a href="https://github.com/jyahooapple/bluetooth-alert-download/releases/latest">Release details and version</a> · About 15 minutes for the basic test. The optional recovery tests take longer, and one of them runs overnight.</p>
+<p class="small"><a href="https://github.com/jyahooapple/bluetooth-alert-download/releases/latest">Release details and version</a> · About 15 minutes for the basic test. The recovery tests take longer, and one of them runs overnight.</p>
 <div class="notice"><strong>Set up and test only while stationary.</strong> Park safely before touching either device. Keep volume low. Functions depend on what the receiver supports; text display, remote controls, browsing, or automatic music resumption are not guaranteed. Phone-call audio (HFP/SCO) and LE Audio are not tested by this beta.</div>
 
 <h3>New in beta.6</h3>
@@ -50,16 +50,18 @@
 </ol>
 <div class="notice"><strong>A speaker with no display can be a useful test.</strong> Choose “No display on receiver” in the report. A missing display is different from a receiver with a screen that failed to show a title.</div>
 
-<h2 id="recovery">3. Optional: recovery tests (new in beta.6)</h2>
-<p>These tests check what happens when the receiver disappears and comes back. They need a real notification, because generated test alerts are not kept for recovery. Use a harmless one you create yourself, so no personal content is involved.</p>
+<h2 id="recovery">3. Recovery tests, including in a car (new in beta.6)</h2>
+<p>These are the real-device checks we need most. They test what happens when the receiver loses power or goes out of range and then comes back. Your report counts as evidence for this release, so please run as many steps as you can and record each one. They are optional only in that you can stop at any point.</p>
+<p><strong>In a car</strong>, “switch the receiver off” means turning the car fully off (ignition off, stereo dark) while you keep the phone with you; “on” means starting it again and waiting for Bluetooth to reconnect. Do every step while parked. <strong>Phones:</strong> Android 15 is most useful. If you also have an older phone (Android 10 to 14), a second report from it is very welcome.</p>
+<p>These steps need a real notification, because generated test alerts are not kept for recovery. Use a harmless one you create yourself, so no personal content is involved.</p>
 <ol class="steps">
 <li><strong>Turn on notification access.</strong> Tap <strong>Grant notification access</strong> in the app and allow Bluetooth Alert. You can turn it off again when you finish.</li>
 <li><strong>Create a dummy notification.</strong> For example, set a reminder or calendar event called <strong>Beta test</strong> for one minute from now, or ask a friend to text you just <strong>Beta test</strong>. Leave the notification in place; swiping it away ends the alert. Set the app to <strong>Priority</strong> so the alert plays with audio.</li>
-<li><strong>Short power loss.</strong> While the alert is playing on the receiver, switch the receiver off for a few minutes (less than 30), then on again. The same alert should come back with its title and audio.</li>
-<li><strong>Quick power flaps.</strong> During an alert, switch the receiver off and on three times within one minute. It should reconnect each time, without a duplicate or stuck alert.</li>
+<li><strong>Short power loss.</strong> While the alert is playing on the receiver, switch the receiver off (in a car, turn the car off) for a few minutes, less than 30, then on again. The same alert should come back with its title and audio.</li>
+<li><strong>Quick power flaps.</strong> During an alert, switch the receiver off and on three times within one minute (in a car, off, on, off, on, off, on). It should reconnect each time, without a duplicate or stuck alert.</li>
 <li><strong>Out of range.</strong> During an alert, walk out of Bluetooth range for a couple of minutes, then return. The alert should come back as in step 3.</li>
 <li><strong>App force-stopped.</strong> During an alert, open Android <strong>Settings → Apps → Bluetooth Alert → Force stop</strong>, then reopen the app with the receiver still connected. The alert should resume.</li>
-<li><strong>Long gap, ideally overnight.</strong> Interrupt an alert by switching the receiver off or leaving range for more than 30 minutes. When you return, the old alert must not replay. The receiver should show only <strong>Welcome back</strong> with a count, and no notification text. If you can, repeat this once with the app force-stopped while away, and once with the phone restarted.</li>
+<li><strong>Long gap, ideally overnight.</strong> Interrupt an alert by switching the receiver off or leaving range for more than 30 minutes. In a car, the simplest way is to park for the night with an alert playing, take the phone inside, and start the car again in the morning. When you return, the old alert must not replay. The receiver should show only <strong>Welcome back</strong> with a count, and no notification text. If you can, repeat this once with the app force-stopped while away, and once with the phone restarted.</li>
 <li><strong>Alert-delivery notification.</strong> On Android 8 or later, check that a <strong>Bluetooth Alert · Delivering an alert</strong> notification appears while an alert plays and disappears when it ends. This matters most on Android 15.</li>
 <li><strong>Save the app's field-test package (optional).</strong> Before step 3, you can tap <strong>Start Field Test</strong> on the main screen, leaving the vehicle text boxes empty. When you finish, tap <strong>Finish, Save &amp; Share ZIP</strong> and choose your email app. The package contains only structured checks; photos, notification text, Bluetooth names, typed vehicle details and raw logs are excluded by the app.</li>
 </ol>
@@ -97,12 +99,13 @@
 </div></fieldset>
 <fieldset><legend>Recovery tests (optional)</legend><div class="grid">
 <label>Notification access <select name="notifications"><option>Left off (basic test only)</option><option>Enabled for recovery tests</option><option>Blocked or setting unavailable</option><option>Unknown</option></select></label>
-<label>Receiver off under 30 minutes <select name="powerLoss" data-recovery></select></label>
+<label>Receiver or car off under 30 minutes <select name="powerLoss" data-recovery></select></label>
 <label>Off/on three times in a minute <select name="flaps"><option>Not tested</option><option>Reconnected each time</option><option>Missed a reconnect</option><option>Duplicate or stuck alert</option></select></label>
 <label>Out of range and back <select name="range" data-recovery></select></label>
 <label>App force-stopped and reopened <select name="forceStop" data-recovery></select></label>
 <label>Away over 30 minutes <select name="longGap" data-longgap></select></label>
-<label>Away over 30 minutes, app killed or phone restarted <select name="longGapRestart" data-longgap></select></label>
+<label>Away over 30 minutes, app force-stopped while away <select name="longGapAppKilled" data-longgap></select></label>
+<label>Away over 30 minutes, phone restarted while away <select name="longGapReboot" data-longgap></select></label>
 <label>“Delivering an alert” notification <select name="deliveryNotice"><option>Not tested</option><option>Appeared, then went away</option><option>Appeared and stayed</option><option>Did not appear</option><option>Android older than 8</option></select></label>
 </div></fieldset>
 <fieldset><legend>Files I am attaching</legend>
@@ -132,7 +135,7 @@
   fill('[data-control]', ['Not tested', 'Worked', 'No visible effect', 'Button not present']);
   fill('[data-recovery]', ['Not tested', 'Same alert resumed with title and audio', 'Title returned, no audio', 'Audio returned, no title', 'Did not resume', 'Duplicate or stuck alert']);
   fill('[data-longgap]', ['Not tested', 'Only Welcome back with a count', 'Old alert replayed', 'Nothing shown', 'Notification text shown']);
-  const fields = [['appVersion','App version'],['phone','Android phone model'],['android','Android version'],['category','Receiver type'],['receiver','Receiver model/year'],['install','Installation'],['connection','Bluetooth connection'],['title','Generated title on receiver'],['play','Play'],['pause','Pause'],['next','Next'],['previous','Previous'],['reconnect','Disconnect/reconnect'],['music','Music recovery'],['notifications','Notification access'],['powerLoss','Receiver off under 30 min'],['flaps','Three quick power flaps'],['range','Out of range and back'],['forceStop','Force-stop and reopen'],['longGap','Away over 30 min'],['longGapRestart','Away over 30 min, app killed or phone restarted'],['deliveryNotice','Delivering-an-alert notification']];
+  const fields = [['appVersion','App version'],['phone','Android phone model'],['android','Android version'],['category','Receiver type'],['receiver','Receiver model/year'],['install','Installation'],['connection','Bluetooth connection'],['title','Generated title on receiver'],['play','Play'],['pause','Pause'],['next','Next'],['previous','Previous'],['reconnect','Disconnect/reconnect'],['music','Music recovery'],['notifications','Notification access'],['powerLoss','Receiver off under 30 min'],['flaps','Three quick power flaps'],['range','Out of range and back'],['forceStop','Force-stop and reopen'],['longGap','Away over 30 min'],['longGapAppKilled','Away over 30 min, app force-stopped'],['longGapReboot','Away over 30 min, phone restarted'],['deliveryNotice','Delivering-an-alert notification']];
   const value = name => form.elements.namedItem(name).value.replace(/[\r\n\x00-\x1f]/g, ' ').trim() || 'Unknown';
   const attachments = () => [...form.querySelectorAll('[data-label]')].filter(box => box.checked).map(box => box.dataset.label).join(', ') || 'None';
   function update() {
