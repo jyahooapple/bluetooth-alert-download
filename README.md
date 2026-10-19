@@ -2,8 +2,8 @@
 
 [Download and beginner tester guide](https://jyahooapple.github.io/bluetooth-alert-download/)
 
-The page explains installation, a generated-alert test while stationary, setup troubleshooting, and how to report results. It includes a local report builder with copy/download options and a link to review and submit a public GitHub issue. It does not upload reports automatically.
+The page explains what the app is and its privacy model, how to install the latest beta, a basic generated-alert test while stationary, the beta.6 recovery tests from bluetooth-alert-poc issue #79, including in a car (power loss, quick power flaps, out of range, force-stop, overnight "Welcome back"), setup troubleshooting, and how to report results. Its local report builder opens an email draft with no recipient filled in; testers add the address from their invitation. Nothing is uploaded automatically.
 
-[Open a beta report](https://github.com/jyahooapple/bluetooth-alert-download/issues/new?template=beta-test.md). No GitHub account? Copy or download the report from the page and send it to the person who invited you to test.
+Testers email the report together with the app's own privacy-safe exports (capability report, `safe-v2_` field-test package, and debug log text if asked), after checking them and removing all personal information. Do not send notification contents, unique device identifiers, screenshots, photos, or ZIP files from older app versions.
 
-Use generic product models and generated test results. Do not submit personal notification contents, unique device identifiers, raw logs, or old field-test ZIP exports.
+[Open a beta report on GitHub](https://github.com/jyahooapple/bluetooth-alert-download/issues/new?template=beta-test.md) is still available for testers with an account. Issues are public, so no app files go there.

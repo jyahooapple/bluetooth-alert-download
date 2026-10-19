@@ -3,62 +3,91 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Install Bluetooth Alert, run a simple parked-device test, and report what worked. No Bluetooth expertise required.">
+<meta name="description" content="Install the Bluetooth Alert beta, run parked-device tests, and email back a privacy-scrubbed report. No Bluetooth expertise required.">
 <title>Bluetooth Alert — Beta tester guide</title>
 <style>
 :root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color-scheme:dark;scroll-behavior:smooth}*{box-sizing:border-box}body{margin:0;background:#09101f;color:#f7f9ff}main{width:min(920px,calc(100% - 32px));margin:auto;padding:40px 0}.card{padding:clamp(20px,5vw,44px);border:1px solid #293754;border-radius:24px;background:#121b30}.eyebrow{color:#9fb5e8;font-weight:800;letter-spacing:.08em;font-size:.85rem}h1{font-size:clamp(2.1rem,7vw,3.8rem);margin:.2em 0}h2{margin-top:2.2rem;scroll-margin-top:16px}p,li{color:#cbd5ea;line-height:1.65}li{margin:.7rem 0}a{color:#bdd0ff}nav{display:flex;flex-wrap:wrap;gap:16px;margin:24px 0}.button,button{display:inline-block;padding:13px 18px;border:1px solid #4a5d83;border-radius:12px;background:#fff;color:#09101f;text-decoration:none;font:inherit;font-weight:750;cursor:pointer}.primary{margin:12px 0}.secondary{background:#1c2a45;color:#f7f9ff}.notice{padding:18px;border-radius:14px;background:#0b1428;border:1px solid #293754}.notice p:last-child{margin-bottom:0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px}.grid>label{min-width:0}.small{font-size:.92rem}.steps>li{padding-left:6px;margin-bottom:24px}.steps strong{color:#f7f9ff}details{border-bottom:1px solid #293754;padding:16px 0}summary{font-weight:700;cursor:pointer;line-height:1.5}fieldset{border:1px solid #293754;border-radius:14px;padding:18px;margin:20px 0}legend{font-weight:700;padding:0 8px}label{display:block;font-weight:650;font-size:.94rem}input,select,textarea{display:block;width:100%;margin:8px 0 16px;padding:12px;border:1px solid #4a5d83;border-radius:9px;background:#09101f;color:#f7f9ff;font:inherit;min-width:0}textarea{line-height:1.5;resize:vertical;font-size:.9rem}.check{display:flex;align-items:flex-start;gap:12px;line-height:1.5;font-weight:400;margin:16px 0}.check input{width:20px;flex:0 0 20px;margin:3px 0;accent-color:#bdd0ff}.actions{display:flex;flex-wrap:wrap;gap:12px}#report-status{min-height:1.6em;color:#bdd0ff}:focus-visible{outline:3px solid #95baff;outline-offset:3px}footer{margin-top:24px;color:#9fb5e8;font-size:.85rem}
 </style>
 </head>
 <body><main><section class="card">
-<div class="eyebrow">ANDROID • BEGINNER-FRIENDLY BETA TEST</div>
+<div class="eyebrow">ANDROID • BETA 2.0.0-beta.6 • BEGINNER-FRIENDLY</div>
 <h1>Help test Bluetooth Alert</h1>
-<p>Bluetooth Alert is an experimental Android app that can send a generated alert title through a compatible Bluetooth media session. A receiver must support and display that metadata; the phone preview alone does not prove it arrived. The app asks you to confirm what you actually see before treating metadata as verified.</p>
-<p><strong>Use an Android phone and, for the main test, a paired receiver with a screen that supports Bluetooth music metadata.</strong> A car stereo or other media receiver is a good candidate. Receivers without a display can still help test setup, but cannot demonstrate visible alert titles. This APK cannot be installed on an iPhone.</p>
+<nav aria-label="Tester guide"><a href="#about">What it is</a><a href="#install">1. Install</a><a href="#test">2. Basic test</a><a href="#recovery">3. Recovery tests</a><a href="#help">Setup help</a><a href="#report">4. Report by email</a></nav>
+
+<h2 id="about">What Bluetooth Alert is</h2>
+<p>Bluetooth Alert is an experimental Android app that shows your phone's alerts on a Bluetooth receiver, such as a car stereo, boat or bike audio unit, or a speaker with a screen. It sends a short alert title through the receiver's Bluetooth music screen, and can briefly interrupt music and then resume it. The app checks which functions each receiver supports and only uses the ones that are confirmed to work. In this beta, alerts go one way, from the phone to the receiver; replying by text or voice is not part of it.</p>
+<p><strong>Privacy first.</strong> The app is a pass-through. It does not store or upload the content of your messages or alerts, and it has no account or cloud service. Anything you send us is something you choose to share by email, after checking it yourself.</p>
+<p><strong>You need an Android phone</strong> (this APK cannot be installed on an iPhone) and, for the main test, a paired receiver with a screen that shows Bluetooth music titles. Receivers without a display are still useful for testing setup and audio.</p>
 <a class="button primary" href="https://github.com/jyahooapple/bluetooth-alert-download/releases/latest/download/app-debug.apk" download>Download latest beta APK</a>
-<p class="small"><a href="https://github.com/jyahooapple/bluetooth-alert-download/releases/latest">Release details and version</a> · Allow about 10–15 minutes for one receiver.</p>
-<div class="notice"><strong>Set up and test only while stationary.</strong> Park safely before touching either device. Keep volume low. This beta currently provides endpoint inspection, generated metadata tests, optional notification access, and experimental media interruption/recovery. Functions depend on evidence from the selected receiver; text display, remote controls, browsing, or automatic music resumption are not guaranteed. Receiver power-loss testing, HFP/SCO calling, and LE Audio are not established by this APK.</div>
-<nav aria-label="Tester guide"><a href="#install">1. Install</a><a href="#test">2. Test</a><a href="#help">Setup help</a><a href="#report">3. Report results</a></nav>
+<p class="small"><a href="https://github.com/jyahooapple/bluetooth-alert-download/releases/latest">Release details and version</a> · About 15 minutes for the basic test. The recovery tests take longer, and one of them runs overnight.</p>
+<div class="notice"><strong>Set up and test only while stationary.</strong> Park safely before touching either device. Keep volume low. Functions depend on what the receiver supports; text display, remote controls, browsing, or automatic music resumption are not guaranteed. Phone-call audio (HFP/SCO) and LE Audio are not tested by this beta.</div>
+
+<h3>New in beta.6</h3>
+<ul>
+<li><strong>Recovery after the receiver loses power or goes out of range.</strong> When the receiver comes back within 30 minutes, the interrupted alert should resume with its title and audio. This also works after the app was force-stopped.</li>
+<li><strong>“Welcome back” after a long gap.</strong> If the receiver was away for more than 30 minutes, old alerts are not replayed. The receiver shows only “Welcome back” and a count, such as “2 notifications in Recent Alerts”.</li>
+<li><strong>Alert audio on newer Android.</strong> While an alert plays, Android 8 and later show a “Bluetooth Alert · Delivering an alert” notification that goes away when the alert ends. This is required for alert audio on Android 15.</li>
+</ul>
 
 <h2 id="install">1. Install and connect</h2>
 <ol class="steps">
 <li><strong>Download on your Android phone.</strong> Open this page on the phone, tap the download button, then open <strong>app-debug.apk</strong> from the browser's Downloads list. If Android asks, allow this browser or file app to install this APK. You can turn that permission off afterward. If installation fails, record the error category in the report below.</li>
-<li><strong>Open Bluetooth Alert and note its version.</strong> The version is shown near the top of the app. Copy it into the report below; if you cannot install the app, use the version on the release page.</li>
+<li><strong>Open Bluetooth Alert and note its version.</strong> The version is shown near the top of the app and should read 2.0.0-beta.6. Copy it into the report below; if you cannot install the app, use the version on the release page.</li>
 <li><strong>Pair normally.</strong> Use Android <strong>Settings → Bluetooth</strong> and the receiver's normal pairing menu. For the first test, disconnect other Bluetooth audio receivers from the phone. On the receiver, select <strong>Bluetooth Audio</strong>, <strong>Media</strong>, or the equivalent music source. Phone-call pairing alone may not connect Bluetooth music.</li>
-<li><strong>Allow Bluetooth access when prompted.</strong> Android may call it <strong>Nearby devices</strong>. Start with the app's generated test alerts: notification access is not needed for this test. Leave access to your personal notifications off for the beginner test.</li>
+<li><strong>Allow Bluetooth access when prompted.</strong> Android may call it <strong>Nearby devices</strong>. The basic test uses the app's generated test alerts, so notification access is not needed for it.</li>
 </ol>
 
-<h2 id="test">2. Run a simple test</h2>
+<h2 id="test">2. Run the basic test</h2>
 <p>Use one receiver per report. “Receiver” just means the Bluetooth device you are testing. It is useful to report failures, unavailable buttons, and devices with no screen too.</p>
 <ol class="steps">
 <li><strong>Find your receiver in the app.</strong> Tap <strong>V2 Endpoint Capability Inspector</strong>, then <strong>Refresh bonded endpoints</strong>. Select the connected receiver in the list and tap <strong>Run available probes</strong>. “Bonded” means paired; “probes” means the app's checks of available functions. Unknown or provisional means a function has not been verified yet.</li>
-<li><strong>Send a generated title.</strong> Tap <strong>Send metadata test</strong> in the inspector. On the main screen, the equivalent button may say <strong>Verify title on connected endpoint</strong> or <strong>Send Test Alert</strong>. Watch the receiver's music/title screen while the test is active. The generated title contains a test number, such as <strong>#1 TEST ALERT — ALPHA</strong>; sending another test changes the number.</li>
-<li><strong>Record what the receiver actually showed.</strong> Was the whole title visible, cut short, missing characters, delayed, or absent? A title in the phone's preview does not prove it reached the receiver. Tap <strong>Confirm metadata visible</strong> only if you saw it on the receiver. Newer builds may also offer buttons for a missing title, timeout, truncation, or wrong characters; use them if present. If a test button is disabled, report that and continue with the steps you can run.</li>
-<li><strong>Try the receiver's media buttons, if it has them.</strong> While a test alert is active, try <strong>Play, Pause, Next, and Previous</strong>, one at a time. Record each separately as worked, no visible effect, button not present, or not tested. Do not mark browsing as confirmed unless you could actually browse alerts on the receiver.</li>
-<li><strong>Check recovery.</strong> Tap <strong>Dismiss alert / Resume media</strong>. Disconnect the receiver in Android Bluetooth settings, reconnect it, refresh the inspector, and send another generated test. Record whether it works after reconnecting; do not remove the pairing unless normal reconnection fails.</li>
-<li><strong>Optional: check music interruption.</strong> Start ordinary music through the receiver, then return to Bluetooth Alert. Select <strong>Priority — interrupt media, show alert, then resume</strong>, send a test, and dismiss it. Record whether music resumed automatically, needed a manual restart, or did not resume. Stop the test if playback keeps switching between apps.</li>
+<li><strong>Send a generated title.</strong> Tap <strong>Send metadata test</strong> in the inspector. On the main screen, the equivalent button may say <strong>Send Test Alert</strong>. Watch the receiver's music/title screen while the test is active. The generated title contains a test number, such as <strong>#1 TEST ALERT — ALPHA</strong>; sending another test changes the number.</li>
+<li><strong>Record what the receiver actually showed.</strong> Was the whole title visible, cut short, missing characters, delayed, or absent? A title in the phone's preview does not prove it reached the receiver. Tap <strong>Confirm metadata visible</strong> only if you saw it on the receiver. Otherwise use the buttons for a missing title, timeout, truncation, or wrong characters. If a test button is disabled, report that and continue with the steps you can run.</li>
+<li><strong>Try the receiver's media buttons, if it has them.</strong> While a test alert is active, try <strong>Play, Pause, Next, and Previous</strong>, one at a time. Record each separately as worked, no visible effect, button not present, or not tested.</li>
+<li><strong>Check reconnecting.</strong> Tap <strong>Dismiss alert / Resume media</strong>. Disconnect the receiver in Android Bluetooth settings, reconnect it, refresh the inspector, and send another generated test. Record whether it works after reconnecting; do not remove the pairing unless normal reconnection fails.</li>
+<li><strong>Check music interruption.</strong> Start ordinary music through the receiver, then return to Bluetooth Alert. Select <strong>Priority — interrupt media, show alert, then resume</strong>, send a test, and dismiss it. Record whether music resumed automatically, needed a manual restart, or did not resume. Stop the test if playback keeps switching between apps.</li>
+<li><strong>Save the app's privacy-safe report.</strong> In the inspector, tap <strong>Export privacy-safe capability report</strong> and choose your email app. This creates the text you will attach in step 4.</li>
 </ol>
-<div class="notice"><strong>A speaker with no display can be a useful test.</strong> Choose “No display on receiver” in the report. A missing display is different from a receiver with a screen that failed to show a title. This basic test does not verify every audio or voice feature.</div>
+<div class="notice"><strong>A speaker with no display can be a useful test.</strong> Choose “No display on receiver” in the report. A missing display is different from a receiver with a screen that failed to show a title.</div>
+
+<h2 id="recovery">3. Recovery tests, including in a car (new in beta.6)</h2>
+<p>These are the real-device checks we need most. They test what happens when the receiver loses power or goes out of range and then comes back. Your report counts as evidence for this release, so please run as many steps as you can and record each one. They are optional only in that you can stop at any point.</p>
+<p><strong>In a car</strong>, “switch the receiver off” means turning the car fully off (ignition off, stereo dark) while you keep the phone with you; “on” means starting it again and waiting for Bluetooth to reconnect. Do every step while parked. <strong>Phones:</strong> Android 15 is most useful. If you also have an older phone (Android 10 to 14), a second report from it is very welcome.</p>
+<p>These steps need a real notification, because generated test alerts are not kept for recovery. Use a harmless one you create yourself, so no personal content is involved.</p>
+<ol class="steps">
+<li><strong>Turn on notification access.</strong> Tap <strong>Grant notification access</strong> in the app and allow Bluetooth Alert. You can turn it off again when you finish.</li>
+<li><strong>Create a dummy notification.</strong> For example, set a reminder or calendar event called <strong>Beta test</strong> for one minute from now, or ask a friend to text you just <strong>Beta test</strong>. Leave the notification in place; swiping it away ends the alert. Set the app to <strong>Priority</strong> so the alert plays with audio.</li>
+<li><strong>Short power loss.</strong> While the alert is playing on the receiver, switch the receiver off (in a car, turn the car off) for a few minutes, less than 30, then on again. The same alert should come back with its title and audio.</li>
+<li><strong>Quick power flaps.</strong> During an alert, switch the receiver off and on three times within one minute (in a car, off, on, off, on, off, on). It should reconnect each time, without a duplicate or stuck alert.</li>
+<li><strong>Out of range.</strong> During an alert, walk out of Bluetooth range for a couple of minutes, then return. The alert should come back as in step 3.</li>
+<li><strong>App force-stopped.</strong> During an alert, open Android <strong>Settings → Apps → Bluetooth Alert → Force stop</strong>, then reopen the app with the receiver still connected. The alert should resume.</li>
+<li><strong>Long gap, ideally overnight.</strong> Interrupt an alert by switching the receiver off or leaving range for more than 30 minutes. In a car, the simplest way is to park for the night with an alert playing, take the phone inside, and start the car again in the morning. When you return, the old alert must not replay. The receiver should show only <strong>Welcome back</strong> with a count, and no notification text. If you can, repeat this once with the app force-stopped while away, and once with the phone restarted.</li>
+<li><strong>Alert-delivery notification.</strong> On Android 8 or later, check that a <strong>Bluetooth Alert · Delivering an alert</strong> notification appears while an alert plays and disappears when it ends. This matters most on Android 15.</li>
+<li><strong>Save the app's field-test package (optional).</strong> Before step 3, you can tap <strong>Start Field Test</strong> on the main screen, leaving the vehicle text boxes empty. When you finish, tap <strong>Finish, Save &amp; Share ZIP</strong> and choose your email app. The package contains only structured checks; photos, notification text, Bluetooth names, typed vehicle details and raw logs are excluded by the app.</li>
+</ol>
 
 <h2 id="help">If something does not work</h2>
 <details><summary>The APK will not install</summary><p>Check that you downloaded it on Android and allowed installation from the browser or file app you used. Record “Installation failed” if it still fails. If Android reports an incompatible update or conflicting signature, report that before uninstalling; uninstalling can remove local test records. Do not disable Android's security protections to force installation.</p></details>
 <details><summary>The receiver is missing, or the test button is disabled</summary><p>Check that Bluetooth is on, Nearby devices/Bluetooth access is allowed, the receiver is paired and connected for music, and the receiver is set to Bluetooth Audio. Disconnect other audio receivers and tap Refresh bonded endpoints. If the button remains disabled, report it. Do not confirm a feature just to enable the button.</p></details>
 <details><summary>The phone shows a title, but the receiver does not</summary><p>Check the receiver's music/title screen rather than its phone-call screen. Dismiss the alert, reconnect Bluetooth, refresh the inspector, and try one more generated test. Report “Title did not appear” if it still does not show. This is useful evidence, not a reason to keep retrying indefinitely.</p></details>
-<details><summary>Android blocks notification access</summary><p>You can still run the generated Bluetooth title test without notification access. If you later choose to test real notifications, use Grant notification access in the app. Some Android versions may offer Allow restricted settings under Settings → Apps → Bluetooth Alert → the three-dot menu. That option is not available on every phone; if it is absent or blocked, record it rather than assuming the Bluetooth test failed. Notification access exposes notification content to the app, so enable it only if you want that separate test.</p></details>
+<details><summary>Android blocks notification access</summary><p>The basic test works without notification access. For the recovery tests, some Android versions require <strong>Allow restricted settings</strong> under Settings → Apps → Bluetooth Alert → the three-dot menu first. That option is not on every phone; if it is absent or blocked, record it and skip the recovery tests.</p></details>
 <details><summary>I do not know the model or Bluetooth version</summary><p>Use “Unknown.” A generic product model, such as “Toyota factory stereo” or “Sony speaker,” is enough to start. You do not need to look up technical profiles or Bluetooth versions. Do not use a personalized Bluetooth name such as a person's phone or car name.</p></details>
 
-<h2 id="report">3. Tell us what happened</h2>
-<p>Fill in what you know below. The report stays on this page until you choose to copy, download, or open it on GitHub. <strong>Nothing is submitted automatically.</strong></p>
-<div class="notice"><strong>Share test results, not personal information.</strong><p>Use generic product models only. Do not include notification contents, names, contacts, phone numbers, email addresses, locations, license plates, VINs, serial numbers, IMEI, MAC/Bluetooth addresses, or personalized device names. For this beginner workflow, use the report below instead of raw debug logs or ZIP exports; older app exports can include private information. Photos are not required.</p></div>
+<h2 id="report">4. Report your results by email</h2>
+<p>Fill in what you know below, then tap <strong>Email report</strong>. It opens your email app with the report filled in. Add the address from your invitation email, attach the app files listed below, check everything, and send. <strong>Nothing is sent automatically.</strong></p>
+<div class="notice"><strong>Remove all personal information before you send anything.</strong>
+<p>We only want test results. Before sending, read the report, every attachment and your email itself, and delete anything personal: names, contacts, phone numbers, email addresses other than your own sender address, notification or message text, locations, license plates, VINs, serial numbers, IMEI, MAC/Bluetooth addresses, and personalized device names such as “Sam's car”. Remove your email signature too. If you are unsure whether something is personal, delete it or leave that file out.</p>
+<p>Attach only these files from beta.6: the <strong>privacy-safe capability report</strong> (text), the <strong>field-test package</strong> whose name starts with <strong>safe-v2_</strong>, and, if asked, the text from <strong>▶ Debug logs → Copy logs</strong> pasted into the email. These are designed not to contain message content, but please still check them. Do not send screenshots, photos, screen recordings, or ZIP files from older app versions.</p></div>
 <form id="report-form">
 <fieldset><legend>What you tested</legend><div class="grid">
 <label>App version <input name="appVersion" maxlength="70" placeholder="Shown at the top of the app; or Unknown" autocomplete="off"></label>
 <label>Android phone make and model <input name="phone" maxlength="80" placeholder="For example: Samsung Galaxy S22; or Unknown" autocomplete="off"></label>
-<label>Android version <input name="android" maxlength="25" placeholder="For example: Android 13; or Unknown" autocomplete="off"></label>
+<label>Android version <input name="android" maxlength="25" placeholder="For example: Android 15; or Unknown" autocomplete="off"></label>
 <label>Receiver type <select name="category"><option>Unknown</option><option>Car</option><option>Boat</option><option>Motorcycle or bike</option><option>Stereo</option><option>Speaker</option><option>Headset or headphones</option><option>Other</option></select></label>
 <label>Receiver make/model and year, if known <input name="receiver" maxlength="100" placeholder="Generic product model only; or Unknown" autocomplete="off"></label>
 <label>Installation <select name="install"><option>Not tested</option><option>Installed successfully</option><option>Installation failed</option><option>Update or signature conflict</option></select></label>
 </div></fieldset>
-<fieldset><legend>What happened</legend><div class="grid">
+<fieldset><legend>Basic test</legend><div class="grid">
 <label>Bluetooth connection <select name="connection"><option>Not tested</option><option>Connected for Bluetooth music</option><option>Paired, but music connection failed</option><option>Pairing failed</option><option>Receiver missing in app</option><option>Bluetooth permission blocked</option></select></label>
 <label>Generated title on the receiver <select name="title"><option>Not tested</option><option>Whole title visible</option><option>Title visible but cut short</option><option>Missing or wrong characters</option><option>Title appeared after a noticeable delay</option><option>Title did not appear</option><option>Still waiting when I ended the test</option><option>No display on receiver</option><option>Test button disabled</option></select></label>
 <label>Play button <select name="play" data-control></select></label>
@@ -67,18 +96,32 @@
 <label>Previous button <select name="previous" data-control></select></label>
 <label>After disconnect/reconnect <select name="reconnect"><option>Not tested</option><option>Test worked again</option><option>Connection returned but title did not</option><option>Could not reconnect</option><option>App needed reopening</option></select></label>
 <label>Music after dismissing the alert <select name="music"><option>Not tested</option><option>Resumed automatically</option><option>Needed manual restart</option><option>Did not resume</option><option>Kept switching between apps</option></select></label>
-<label>Notification access (optional separate test) <select name="notifications"><option>Left off for generated tests</option><option>Enabled by choice</option><option>Blocked or setting unavailable</option><option>Unknown</option></select></label>
 </div></fieldset>
+<fieldset><legend>Recovery tests (optional)</legend><div class="grid">
+<label>Notification access <select name="notifications"><option>Left off (basic test only)</option><option>Enabled for recovery tests</option><option>Blocked or setting unavailable</option><option>Unknown</option></select></label>
+<label>Receiver or car off under 30 minutes <select name="powerLoss" data-recovery></select></label>
+<label>Off/on three times in a minute <select name="flaps"><option>Not tested</option><option>Reconnected each time</option><option>Missed a reconnect</option><option>Duplicate or stuck alert</option></select></label>
+<label>Out of range and back <select name="range" data-recovery></select></label>
+<label>App force-stopped and reopened <select name="forceStop" data-recovery></select></label>
+<label>Away over 30 minutes <select name="longGap" data-longgap></select></label>
+<label>Away over 30 minutes, app force-stopped while away <select name="longGapAppKilled" data-longgap></select></label>
+<label>Away over 30 minutes, phone restarted while away <select name="longGapReboot" data-longgap></select></label>
+<label>“Delivering an alert” notification <select name="deliveryNotice"><option>Not tested</option><option>Appeared, then went away</option><option>Appeared and stayed</option><option>Did not appear</option><option>Android older than 8</option></select></label>
+</div></fieldset>
+<fieldset><legend>Files I am attaching</legend>
+<label class="check"><input type="checkbox" name="attachReport" data-label="Capability report">Privacy-safe capability report</label>
+<label class="check"><input type="checkbox" name="attachZip" data-label="Field-test package (safe-v2_)">Field-test package starting with safe-v2_</label>
+<label class="check"><input type="checkbox" name="attachLogs" data-label="Debug log text">Debug log text, checked and pasted into the email</label>
+</fieldset>
 <label for="report-preview">Your report — check it before sharing</label>
 <textarea id="report-preview" rows="14" readonly spellcheck="false"></textarea>
-<label class="check"><input type="checkbox" id="privacy-check" required>I checked that the report contains only generic device models and test results, with no personal information.</label>
-<div class="actions"><button type="button" id="copy-report">Copy report</button><button type="button" class="secondary" id="download-report">Download report</button><button type="submit" class="secondary">Open report on GitHub</button></div>
+<label class="check"><input type="checkbox" id="privacy-check" required>I checked this report, every attachment and my email, and removed all personal information. I understand nothing is sent until I press Send.</label>
+<div class="actions"><button type="button" id="email-report">Email report</button><button type="button" class="secondary" id="copy-report">Copy report</button><button type="button" class="secondary" id="download-report">Download report</button></div>
 <p id="report-status" role="status" aria-live="polite"></p>
-<p class="small"><strong>GitHub:</strong> a GitHub account is required. The button opens a filled-in report for you to review; press <strong>Submit new issue</strong> there to send it. Issues and anything attached to them are public.</p>
-<p class="small"><strong>No GitHub account?</strong> Copy or download the report and send it to the person who invited you to test, using the channel they gave you. Downloading a report does not send it to us.</p>
-<p class="small"><a href="https://github.com/jyahooapple/bluetooth-alert-download/issues/new?template=beta-test.md">Open the report template directly</a></p>
+<p class="small"><strong>Email app did not open?</strong> Copy or download the report and paste or attach it to an email to the address in your invitation.</p>
+<p class="small"><strong>Prefer GitHub?</strong> You can also <button type="submit" class="secondary">Open report on GitHub</button> (account required). GitHub issues are public, so do not attach app files there.</p>
 </form>
-<noscript><p>The report builder requires JavaScript. You can still follow the guide and <a href="https://github.com/jyahooapple/bluetooth-alert-download/issues/new?template=beta-test.md">open the beta report template on GitHub</a>, or copy the questions from that template and send your answers to your test coordinator.</p></noscript>
+<noscript><p>The report builder requires JavaScript. You can still follow the guide and email your answers to the address in your invitation, using the questions in the <a href="https://github.com/jyahooapple/bluetooth-alert-download/issues/new?template=beta-test.md">beta report template</a>.</p></noscript>
 <footer>Successes, partial results, and setup failures are all useful. Please send a separate report for each phone/receiver combination.</footer>
 </section></main>
 <script>
@@ -86,15 +129,17 @@
   const form = document.getElementById('report-form');
   const preview = document.getElementById('report-preview');
   const status = document.getElementById('report-status');
-  for (const select of document.querySelectorAll('[data-control]')) {
-    for (const text of ['Not tested', 'Worked', 'No visible effect', 'Button not present']) {
-      select.add(new Option(text, text));
-    }
-  }
-  const fields = [['appVersion','App version'],['phone','Android phone model'],['android','Android version'],['category','Receiver type'],['receiver','Receiver model/year'],['install','Installation'],['connection','Bluetooth connection'],['title','Generated title on receiver'],['play','Play'],['pause','Pause'],['next','Next'],['previous','Previous'],['reconnect','Disconnect/reconnect'],['music','Music recovery'],['notifications','Notification access']];
+  const fill = (selector, options) => {
+    for (const select of document.querySelectorAll(selector)) for (const text of options) select.add(new Option(text, text));
+  };
+  fill('[data-control]', ['Not tested', 'Worked', 'No visible effect', 'Button not present']);
+  fill('[data-recovery]', ['Not tested', 'Same alert resumed with title and audio', 'Title returned, no audio', 'Audio returned, no title', 'Did not resume', 'Duplicate or stuck alert']);
+  fill('[data-longgap]', ['Not tested', 'Only Welcome back with a count', 'Old alert replayed', 'Nothing shown', 'Notification text shown']);
+  const fields = [['appVersion','App version'],['phone','Android phone model'],['android','Android version'],['category','Receiver type'],['receiver','Receiver model/year'],['install','Installation'],['connection','Bluetooth connection'],['title','Generated title on receiver'],['play','Play'],['pause','Pause'],['next','Next'],['previous','Previous'],['reconnect','Disconnect/reconnect'],['music','Music recovery'],['notifications','Notification access'],['powerLoss','Receiver off under 30 min'],['flaps','Three quick power flaps'],['range','Out of range and back'],['forceStop','Force-stop and reopen'],['longGap','Away over 30 min'],['longGapAppKilled','Away over 30 min, app force-stopped'],['longGapReboot','Away over 30 min, phone restarted'],['deliveryNotice','Delivering-an-alert notification']];
   const value = name => form.elements.namedItem(name).value.replace(/[\r\n\x00-\x1f]/g, ' ').trim() || 'Unknown';
+  const attachments = () => [...form.querySelectorAll('[data-label]')].filter(box => box.checked).map(box => box.dataset.label).join(', ') || 'None';
   function update() {
-    preview.value = ['Bluetooth Alert — physical beta test', 'Test source: generated app alert; results are tester observations.', ...fields.map(([name,label]) => label + ': ' + value(name)), '', 'Personal information, notification text, raw logs and photos excluded by the tester.'].join('\n');
+    preview.value = ['Bluetooth Alert — physical beta test', 'Test source: generated app alerts and self-made dummy notifications; results are tester observations.', ...fields.map(([name,label]) => label + ': ' + value(name)), 'Attachments: ' + attachments(), '', 'Personal information, notification text, photos and screenshots removed by the tester before sending.'].join('\n');
   }
   function checked() {
     if (!form.reportValidity()) return false;
@@ -103,15 +148,22 @@
   }
   form.addEventListener('input', () => {update(); status.textContent = '';});
   form.addEventListener('change', update);
+  document.getElementById('email-report').addEventListener('click', () => {
+    if (!checked()) return;
+    const subject = encodeURIComponent('Bluetooth Alert beta report — ' + value('category') + ' — ' + value('appVersion'));
+    const link = document.createElement('a'); link.href = 'mailto:?subject=' + subject + '&body=' + encodeURIComponent(preview.value);
+    document.body.append(link); link.click(); link.remove();
+    status.textContent = 'Your email app should open with the report. Add the address from your invitation, attach the app files, check everything for personal information, then send. Nothing has been sent yet.';
+  });
   document.getElementById('copy-report').addEventListener('click', async () => {
     if (!checked()) return;
     try {
       if (!navigator.clipboard) throw new Error('Clipboard unavailable');
       await navigator.clipboard.writeText(preview.value);
-      status.textContent = 'Report copied. Paste it into a GitHub issue or your test coordinator’s message channel. It has not been submitted.';
+      status.textContent = 'Report copied. Paste it into an email to the address in your invitation. It has not been sent.';
     } catch {
       preview.focus(); preview.select();
-      status.textContent = 'Automatic copying is unavailable. Copy the selected report, or use Download report. It has not been submitted.';
+      status.textContent = 'Automatic copying is unavailable. Copy the selected report, or use Download report. It has not been sent.';
     }
   });
   document.getElementById('download-report').addEventListener('click', () => {
@@ -120,7 +172,7 @@
     const link = document.createElement('a'); link.href = url; link.download = 'bluetooth-alert-beta-report.txt';
     document.body.append(link); link.click(); link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    status.textContent = 'Report downloaded. Send the file to your test coordinator or attach it to a GitHub issue. It has not been submitted.';
+    status.textContent = 'Report downloaded. Attach it to an email to the address in your invitation. It has not been sent.';
   });
   form.addEventListener('submit', event => {
     event.preventDefault();
@@ -128,7 +180,7 @@
     const query = new URLSearchParams({template:'beta-test.md', title:'[Beta test] ' + value('category') + ' compatibility', body:preview.value});
     const opened = window.open('https://github.com/jyahooapple/bluetooth-alert-download/issues/new?' + query.toString(), '_blank');
     if (opened) {opened.opener = null; status.textContent = 'GitHub opened for review. Sign in if needed, then press Submit new issue there. Your report is not submitted by this page.';}
-    else {status.textContent = 'Your browser blocked the GitHub window. Allow pop-ups for this page, or copy/download the report and open the report template linked below.';}
+    else {status.textContent = 'Your browser blocked the GitHub window. Allow pop-ups for this page, or email the report instead.';}
   });
   update();
 })();

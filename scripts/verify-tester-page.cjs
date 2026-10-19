@@ -22,7 +22,7 @@ const { chromium } = require('playwright');
     }
     const href = await page.getByRole('link', { name: 'Download latest beta APK', exact: true }).getAttribute('href');
     assert.equal(href, 'https://github.com/jyahooapple/bluetooth-alert-download/releases/latest/download/app-debug.apk');
-    await page.locator('[name=appVersion]').fill('2.0.0-beta.3 (14)');
+    await page.locator('[name=appVersion]').fill('2.0.0-beta.6 (17)');
     await page.locator('[name=phone]').fill('Samsung Galaxy S22');
     await page.locator('[name=category]').selectOption('Car');
     await page.locator('[name=receiver]').fill('Toyota factory stereo');
@@ -33,24 +33,51 @@ const { chromium } = require('playwright');
     assert.ok(report.includes('Play: Worked'));
     assert.ok(report.includes('Pause: Not tested'));
     assert.ok(report.includes('Android version: Unknown'));
+    await page.locator('[name=powerLoss]').selectOption('Same alert resumed with title and audio');
+    await page.locator('[name=longGap]').selectOption('Only Welcome back with a count');
+    await page.locator('[name=attachReport]').check();
+    await page.locator('[name=attachZip]').check();
+    const recoveryReport = await page.locator('#report-preview').inputValue();
+    assert.ok(recoveryReport.includes('Receiver off under 30 min: Same alert resumed with title and audio'));
+    assert.ok(recoveryReport.includes('Away over 30 min: Only Welcome back with a count'));
+    assert.ok(recoveryReport.includes('Three quick power flaps: Not tested'));
+    assert.ok(recoveryReport.includes('Away over 30 min, app force-stopped: Not tested'));
+    assert.ok(recoveryReport.includes('Away over 30 min, phone restarted: Not tested'));
+    assert.ok(recoveryReport.includes('Attachments: Capability report, Field-test package (safe-v2_)'));
+    for (const text of ['What Bluetooth Alert is', 'does not store or upload the content', 'Remove all personal information before you send anything', 'Welcome back']) {
+      assert.ok((await page.locator('main').innerText()).includes(text), `Page must explain: ${text}`);
+    }
+    const finalReport = await page.locator('#report-preview').inputValue();
+    await page.evaluate(() => document.addEventListener('click', e => {
+      if (e.target.href && e.target.href.startsWith('mailto:')) { e.preventDefault(); window.mailtoUrl = e.target.href; }
+    }, true));
+    await page.getByRole('button', { name: 'Email report', exact: true }).click();
     await page.getByRole('button', { name: 'Copy report', exact: true }).click();
     assert.equal(await page.evaluate(() => window.copiedReport), undefined);
+    assert.equal(await page.evaluate(() => window.mailtoUrl), undefined);
     assert.equal(await page.locator('#privacy-check').evaluate(e => e.validity.valid), false);
     await page.locator('#privacy-check').check();
+    await page.getByRole('button', { name: 'Email report', exact: true }).click();
+    const mail = new URL(await page.evaluate(() => window.mailtoUrl));
+    assert.equal(mail.protocol, 'mailto:');
+    assert.equal(mail.pathname, '', 'The public page must not publish a recipient address');
+    assert.equal(mail.searchParams.get('body'), finalReport);
+    assert.match(mail.searchParams.get('subject'), /^Bluetooth Alert beta report — Car — 2\.0\.0-beta\.6/);
+    assert.match(await page.locator('#report-status').innerText(), /Nothing has been sent yet/);
     await page.getByRole('button', { name: 'Copy report', exact: true }).click();
     await page.waitForFunction(() => window.copiedReport !== undefined);
-    assert.equal(await page.evaluate(() => window.copiedReport), report);
+    assert.equal(await page.evaluate(() => window.copiedReport), finalReport);
     const [download] = await Promise.all([
       page.waitForEvent('download'), page.getByRole('button', { name: 'Download report', exact: true }).click()
     ]);
     assert.equal(download.suggestedFilename(), 'bluetooth-alert-beta-report.txt');
-    assert.equal(fs.readFileSync(await download.path(), 'utf8'), report);
+    assert.equal(fs.readFileSync(await download.path(), 'utf8'), finalReport);
     await page.evaluate(() => { window.open = url => { window.issueUrl = url; return { opener: null }; }; });
     await page.getByRole('button', { name: 'Open report on GitHub', exact: true }).click();
     const issue = new URL(await page.evaluate(() => window.issueUrl));
     assert.equal(issue.origin, 'https://github.com');
     assert.equal(issue.pathname, '/jyahooapple/bluetooth-alert-download/issues/new');
-    assert.equal(issue.searchParams.get('body'), report);
+    assert.equal(issue.searchParams.get('body'), finalReport);
     assert.equal(issue.searchParams.get('template'), 'beta-test.md');
     await page.evaluate(() => { window.open = () => null; });
     await page.getByRole('button', { name: 'Open report on GitHub', exact: true }).click();
@@ -68,6 +95,6 @@ const { chromium } = require('playwright');
     await noJs.goto(pathToFileURL(path.resolve('site/index.html')).href);
     assert.match(await noJs.locator('noscript').innerText(), /report builder requires JavaScript/);
     assert.ok(fs.readFileSync('.github/ISSUE_TEMPLATE/beta-test.md', 'utf8').includes('This issue is public.'));
-    console.log('PASS: 320/390/1280px layouts, APK link, structured results, privacy review, clipboard success/fallback, download contents, GitHub draft/blocked popup, no automatic network submission, no-JavaScript fallback. No issue was submitted.');
+    console.log('PASS: 320/390/1280px layouts, APK link, app explanation, beta.6 recovery results, privacy review, email draft without recipient, clipboard success/fallback, download contents, GitHub draft/blocked popup, no automatic network submission, no-JavaScript fallback. No issue was submitted.');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });
