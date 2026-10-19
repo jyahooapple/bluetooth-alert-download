@@ -44,7 +44,7 @@ const { chromium } = require('playwright');
     assert.ok(recoveryReport.includes('Away over 30 min, app force-stopped: Not tested'));
     assert.ok(recoveryReport.includes('Away over 30 min, phone restarted: Not tested'));
     assert.ok(recoveryReport.includes('Attachments: Capability report, Field-test package (safe-v2_)'));
-    for (const text of ['What Bluetooth Alert is', 'does not store or upload the content', 'Remove all personal information before you send anything', 'Welcome back']) {
+    for (const text of ['What Bluetooth Alert is', 'does not store or upload the content', "the app's files are already cleaned for you", 'Your only check is what you write yourself', 'Welcome back']) {
       assert.ok((await page.locator('main').innerText()).includes(text), `Page must explain: ${text}`);
     }
     const finalReport = await page.locator('#report-preview').inputValue();
